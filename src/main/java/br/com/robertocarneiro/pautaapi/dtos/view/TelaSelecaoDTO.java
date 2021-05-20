@@ -1,4 +1,4 @@
-package br.com.robertocarneiro.pautaapi.dtos;
+package br.com.robertocarneiro.pautaapi.dtos.view;
 
 import br.com.robertocarneiro.pautaapi.enums.TipoTela;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PautaViewCreateDTO {
+public class TelaSelecaoDTO {
 
-    private TipoTela tipo;
+    private static final TipoTela tipo = TipoTela.SELECAO;
     private String titulo;
-    private List<PautaViewListItemDTO> itens;
+    private List<SelecaoItemDTO> itens;
+    private BotaoDTO botaoOk;
 }
