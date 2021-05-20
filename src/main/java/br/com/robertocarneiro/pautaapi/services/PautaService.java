@@ -9,7 +9,7 @@ public interface PautaService {
 
     List<Pauta> findAll();
 
-    Pauta findById(Long id, Long associadoId);
+    Pauta findById(Long id);
 
     void save(PautaSaveDTO pautaSaveDTO);
 }

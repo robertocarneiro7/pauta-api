@@ -25,7 +25,7 @@ public class PautaServiceImpl implements PautaService {
     }
 
     @Override
-    public Pauta findById(Long id, Long associadoId) {
+    public Pauta findById(Long id) {
         return repository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(Pauta.class, id));

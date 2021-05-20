@@ -7,5 +7,7 @@ public interface PautaViewService {
 
     TelaSelecaoDTO viewList();
 
+    TelaFormularioDTO viewVisualize(Long id, Long associadoId);
+
     TelaFormularioDTO viewCreate();
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 
+import java.util.Map;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,4 +18,5 @@ public class BotaoDTO {
     private String url;
     private HttpMethod metodo;
     private Object body;
+    private Map<String, Object> headers;
 }

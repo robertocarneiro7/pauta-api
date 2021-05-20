@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 
+import java.util.Map;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class SelecaoItemDTO {
     private String texto;
     private String url;
     private HttpMethod metodo;
+    private Map<String, Object> headers;
 }
