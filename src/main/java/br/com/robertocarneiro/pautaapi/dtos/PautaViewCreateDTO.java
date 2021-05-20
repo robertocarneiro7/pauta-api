@@ -12,10 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PautaViewListDTO {
+public class PautaViewCreateDTO {
 
     private TipoTela tipo;
     private String titulo;
     private List<PautaViewListItemDTO> itens;
-    private BotaoViewDTO botaoOk;
 }

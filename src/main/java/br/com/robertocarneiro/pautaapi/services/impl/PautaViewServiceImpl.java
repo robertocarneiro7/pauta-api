@@ -1,5 +1,6 @@
 package br.com.robertocarneiro.pautaapi.services.impl;
 
+import br.com.robertocarneiro.pautaapi.dtos.BotaoViewDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaViewListDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaViewListItemDTO;
 import br.com.robertocarneiro.pautaapi.enums.TipoTela;
@@ -25,8 +26,11 @@ public class PautaViewServiceImpl implements PautaViewService {
     @Value("${controller.pauta-view.path}")
     private String pautaViewPath;
 
-    @Value("${label.pauta-view.title}")
-    private String labelPautaViewTitle;
+    @Value("${label.pauta-view.view-list.title}")
+    private String labelPautaViewListTitle;
+
+    @Value("${label.pauta-view.create.title}")
+    private String labelPautaViewCreateTitle;
 
     @Override
     public PautaViewListDTO viewList() {
@@ -43,8 +47,14 @@ public class PautaViewServiceImpl implements PautaViewService {
         return PautaViewListDTO
                 .builder()
                 .tipo(TipoTela.SELECAO)
-                .titulo(labelPautaViewTitle)
+                .titulo(labelPautaViewListTitle)
                 .itens(itens)
+                .botaoOk(BotaoViewDTO
+                        .builder()
+                        .texto(labelPautaViewCreateTitle)
+                        .url(serverUrl + pautaViewPath)
+                        .metodo(HttpMethod.GET)
+                        .build())
                 .build();
     }
 
