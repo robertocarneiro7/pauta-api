@@ -3,6 +3,7 @@ package br.com.robertocarneiro.pautaapi.services.impl;
 import br.com.robertocarneiro.pautaapi.dtos.PautaSaveDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.*;
 import br.com.robertocarneiro.pautaapi.enums.TipoCampo;
+import br.com.robertocarneiro.pautaapi.enums.TipoTela;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
 import br.com.robertocarneiro.pautaapi.services.PautaViewService;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .collect(Collectors.toList());
         return TelaSelecaoDTO
                 .builder()
+                .tipo(TipoTela.SELECAO)
                 .titulo(labelPautaViewListTitle)
                 .itens(itens)
                 .botaoOk(BotaoDTO
@@ -95,6 +97,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .build());
         return TelaFormularioDTO
                 .builder()
+                .tipo(TipoTela.FORMULARIO)
                 .titulo(labelPautaViewCreateTitle)
                 .itens(itens)
                 .botaoOk(BotaoDTO

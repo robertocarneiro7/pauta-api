@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class TelaSelecaoDTO {
 
-    private static final TipoTela tipo = TipoTela.SELECAO;
+    private TipoTela tipo;
     private String titulo;
     private List<SelecaoItemDTO> itens;
     private BotaoDTO botaoOk;

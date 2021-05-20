@@ -20,6 +20,7 @@ public class Associado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long associadoId;
+    @Column(nullable = false, unique = true)
     private String cpf;
     @CreationTimestamp
     private LocalDateTime dataCriacao;

@@ -1,11 +1,11 @@
 package br.com.robertocarneiro.pautaapi.exceptions;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
 
-@ResponseStatus
-public class NotFoundException extends RuntimeException {
+public class NotFoundException extends DefaultException {
 
     public <T> NotFoundException(Class<T> clazz, Long id) {
-        super(clazz.getSimpleName() + " com id=" + id + " não foi encontrado");
+        super(clazz.getSimpleName() + " com id=" + id + " não foi encontrado", HttpStatus.NOT_FOUND);
+
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class TelaFormularioDTO {
 
-    private static final TipoTela tipo = TipoTela.FORMULARIO;
+    private TipoTela tipo;
     private String titulo;
     private List<CampoDTO> itens;
     private BotaoDTO botaoOk;
