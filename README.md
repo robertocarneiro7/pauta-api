@@ -58,7 +58,7 @@ Para simplificar o uso, recomendo a utilização do Intellij.
 
 ## Observações Importantes
 1. Swagger está rodando no seguinte caminho:
-    - http://localhost:8080/swagger-ui/index.html
+    - http://localhost:8080/swagger-ui.html
 2. Os logs estão sendo gerados na pasta "logs", que está na raiz do projeto(Essa pasta está no .gitignore)
 3. A collection do postman, com os recursos da API, está no seguinte path:
     - ***src/main/resources/postman/PautaAPI.postman_collection.json***
