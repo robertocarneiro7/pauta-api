@@ -76,7 +76,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .map(pauta -> SelecaoItemDTO
                         .builder()
                         .texto(pauta.getNome())
-                        .url(serverUrl + pautaViewPath + visualizePath + "/" + pauta.getPautaId())
+                        .url(serverUrl + pautaViewPath + "/" + pauta.getPautaId() + visualizePath)
                         .metodo(HttpMethod.GET)
                         .headers(getHeadersAssociadoId())
                         .build())
@@ -142,8 +142,9 @@ public class PautaViewServiceImpl implements PautaViewService {
     }
 
     private BotaoDTO buildBotaOkToViewVisualize(Pauta pauta, Associado associado) {
-        if ((nonNull(pauta.getDataAberturaVotacao()) && LocalDateTime.now().isBefore(pauta.getDataAberturaVotacao()))
-                || (nonNull(pauta.getDataEncerramentoVotacao()) && LocalDateTime.now().isAfter(pauta.getDataAberturaVotacao()))
+        LocalDateTime now = LocalDateTime.now();
+        if ((nonNull(pauta.getDataAberturaVotacao()) && now.isBefore(pauta.getDataAberturaVotacao()))
+                || (nonNull(pauta.getDataEncerramentoVotacao()) && now.isAfter(pauta.getDataEncerramentoVotacao()))
                 || isNull(associado)
                 || votoService.findFirstByAssociadoAndPauta(associado, pauta).isPresent()) {
             return null;
@@ -192,8 +193,8 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .metodo(HttpMethod.POST)
                         .body(PautaSaveDTO
                                 .builder()
-                                .nome(null)
-                                .descricao(null)
+                                .nome("")
+                                .descricao("")
                                 .build())
                         .build())
                 .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listPath))
@@ -227,9 +228,9 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .texto(MessageUtil.get("label.button.save"))
                         .url(serverUrl + pautaPath + "/" + id + openVotePath)
                         .metodo(HttpMethod.PUT)
-                        .body(PautaOpenVoteDTO.builder().duracaoVotacao(null).build())
+                        .body(PautaOpenVoteDTO.builder().duracaoVotacao(1L).build())
                         .build())
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + visualizePath + "/" + id))
+                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + "/" + id + visualizePath))
                 .build();
     }
 

@@ -31,7 +31,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .error(status.getReasonPhrase())
                 .message(exception.getMessage())
-                .path(request.getRequest().getRequestURI())
+                .path(request.getRequest().getRequestURL().toString())
                 .build();
         return new ResponseEntity<>(dto, status);
     }
@@ -48,7 +48,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
                         .stream()
                         .map(error -> "Campo '" + ((FieldError) error).getField() + "' " + error.getDefaultMessage())
                         .collect(Collectors.joining("\n")))
-                .path(((ServletWebRequest)request).getRequest().getRequestURI())
+                .path(((ServletWebRequest)request).getRequest().getRequestURL().toString())
                 .build();
         return new ResponseEntity<>(dto, status);
     }

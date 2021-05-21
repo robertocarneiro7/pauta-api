@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface VotoService {
 
     Optional<Voto> findFirstByAssociadoAndPauta(Associado associado, Pauta pauta);
+
+    void validateIfCanVote(Associado associado, Pauta pauta);
 }

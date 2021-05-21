@@ -6,5 +6,5 @@ public enum TipoCampo {
     INPUT_TEXTO,
     INPUT_TEXTO_AREA,
     INPUT_NUMERO,
-    INPUT_DATA
+    INPUT_SELECT
 }

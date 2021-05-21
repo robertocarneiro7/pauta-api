@@ -22,7 +22,7 @@ public class Voto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long votoId;
     @Enumerated(value = EnumType.STRING)
-    private EnumBoolean valor;
+    private EnumBoolean resposta;
     @CreationTimestamp
     private LocalDateTime dataCriacao;
     @ManyToOne
