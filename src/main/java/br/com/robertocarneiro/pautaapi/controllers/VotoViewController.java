@@ -5,6 +5,8 @@ import br.com.robertocarneiro.pautaapi.services.VotoViewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("${controller.voto-view.path}")
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class VotoViewController {
     @GetMapping("${controller.votar.path}${controller.pauta.path}/{pautaId}")
     public TelaFormularioDTO viewVote(
             @PathVariable Long pautaId,
-            @RequestHeader(name = "${header.associado-id.key}", required = false) Long associadoId) {
+            @RequestHeader(name = "${header.associado-id.key}") @Valid Long associadoId) {
         return votoViewService.viewVote(pautaId, associadoId);
     }
 

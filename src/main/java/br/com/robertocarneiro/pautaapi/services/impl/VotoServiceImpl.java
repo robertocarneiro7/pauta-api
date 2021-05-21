@@ -1,6 +1,7 @@
 package br.com.robertocarneiro.pautaapi.services.impl;
 
 import br.com.robertocarneiro.pautaapi.dtos.VotoCountDTO;
+import br.com.robertocarneiro.pautaapi.dtos.VotoSaveDTO;
 import br.com.robertocarneiro.pautaapi.entities.Associado;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
 import br.com.robertocarneiro.pautaapi.entities.Voto;
@@ -9,6 +10,8 @@ import br.com.robertocarneiro.pautaapi.exceptions.AlreadyVotedException;
 import br.com.robertocarneiro.pautaapi.exceptions.VoteClosedException;
 import br.com.robertocarneiro.pautaapi.exceptions.VoteHasNotYetBeenOpenedException;
 import br.com.robertocarneiro.pautaapi.repositories.VotoRepository;
+import br.com.robertocarneiro.pautaapi.services.AssociadoService;
+import br.com.robertocarneiro.pautaapi.services.PautaService;
 import br.com.robertocarneiro.pautaapi.services.VotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,12 +27,29 @@ import static java.util.Objects.isNull;
 public class VotoServiceImpl implements VotoService {
 
     private final VotoRepository repository;
+    private final PautaService pautaService;
+    private final AssociadoService associadoService;
 
     private static final String EMPATE = "EMPATE";
 
     @Override
     public Optional<Voto> findFirstByAssociadoAndPauta(Associado associado, Pauta pauta) {
         return repository.findFirstByAssociadoAndPauta(associado, pauta);
+    }
+
+    @Override
+    public void save(VotoSaveDTO votoSaveDTO, Long pautaId, Long associadoId) {
+        Associado associado = associadoService.findById(associadoId);
+        Pauta pauta = pautaService.findById(pautaId);
+        validateIfCanVote(associado, pauta);
+
+        Voto voto = Voto
+                .builder()
+                .resposta(EnumBoolean.findByDescricao(votoSaveDTO.getResposta()))
+                .associado(associado)
+                .pauta(pauta)
+                .build();
+        repository.save(voto);
     }
 
     @Override
