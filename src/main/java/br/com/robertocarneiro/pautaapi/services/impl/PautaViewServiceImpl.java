@@ -12,6 +12,7 @@ import br.com.robertocarneiro.pautaapi.services.AssociadoService;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
 import br.com.robertocarneiro.pautaapi.services.PautaViewService;
 import br.com.robertocarneiro.pautaapi.services.VotoService;
+import br.com.robertocarneiro.pautaapi.utils.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -61,65 +62,12 @@ public class PautaViewServiceImpl implements PautaViewService {
     @Value("${controller.voto-view.path}")
     private String votoViewPath;
 
-    @Value("${label.pauta-view.view-list.title}")
-    private String labelPautaViewListTitle;
-
-    @Value("${label.pauta-view.visualize.title}")
-    private String labelPautaViewVisualizeTitle;
-
-    @Value("${label.pauta-view.create.title}")
-    private String labelPautaViewCreateTitle;
-
-    @Value("${label.pauta-view.open-vote.title}")
-    private String labelPautaViewOpenVoteTitle;
-
-    @Value("${label.field.name.id}")
-    private String labelFieldNameId;
-
-    @Value("${label.field.name.title}")
-    private String labelFieldNameTitle;
-
-    @Value("${label.field.description.id}")
-    private String labelFieldDescriptionId;
-
-    @Value("${label.field.description.title}")
-    private String labelFieldDescriptionTitle;
-
-    @Value("${label.field.date-open-vote.id}")
-    private String labelFieldDateOpenVoteId;
-
-    @Value("${label.field.date-open-vote.title}")
-    private String labelFieldDateOpenVoteTitle;
-
-    @Value("${label.field.date-close-vote.id}")
-    private String labelFieldDateCloseVoteId;
-
-    @Value("${label.field.date-close-vote.title}")
-    private String labelFieldDateCloseVoteTitle;
-
-    @Value("${label.field.voting-duration.id}")
-    private String labelFieldVotingDurationId;
-
-    @Value("${label.field.voting-duration.title}")
-    private String labelFieldVotingDurationTitle;
-
-    @Value("${label.button.save}")
-    private String labelButtonSave;
-
-    @Value("${label.button.vote}")
-    private String labelButtonVote;
-
-    @Value("${label.button.open-vote}")
-    private String labelButtonOpenVote;
-
-    @Value("${label.button.back}")
-    private String labelButtonBack;
-
     @Value("${header.associado-id.key}")
     private String headerAssociadoIdKey;
 
-    @Value("${header.associado-id.desc-value}")
-    private String headerAssociadoIdDescValue;
+    private static final String LABEL_FIELD_NAME_ID = "label.field.name.id";
+
+    private static final String LABEL_FIELD_NAME_TITLE = "label.field.name.title";
 
     @Override
     public TelaSelecaoDTO viewList() {
@@ -131,17 +79,17 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .texto(pauta.getNome())
                         .url(serverUrl + pautaViewPath + visualizePath + "/" + pauta.getPautaId())
                         .metodo(HttpMethod.GET)
-                        .headers(Map.of(headerAssociadoIdKey, headerAssociadoIdDescValue))
+                        .headers(getHeadersAssociadoId())
                         .build())
                 .collect(Collectors.toList());
         return TelaSelecaoDTO
                 .builder()
                 .tipo(TipoTela.SELECAO)
-                .titulo(labelPautaViewListTitle)
+                .titulo(MessageUtil.get("label.pauta-view.view-list.title"))
                 .itens(itens)
                 .botaoOk(BotaoDTO
                         .builder()
-                        .texto(labelPautaViewCreateTitle)
+                        .texto(MessageUtil.get("label.pauta-view.create.title"))
                         .url(serverUrl + pautaViewPath + createPath)
                         .metodo(HttpMethod.GET)
                         .build())
@@ -159,35 +107,35 @@ public class PautaViewServiceImpl implements PautaViewService {
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.TEXTO)
-                .id(labelFieldNameId)
-                .titulo(labelFieldNameTitle)
+                .id(MessageUtil.get(LABEL_FIELD_NAME_ID))
+                .titulo(MessageUtil.get(LABEL_FIELD_NAME_TITLE))
                 .valor(pauta.getNome())
                 .build());
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.TEXTO)
-                .id(labelFieldDescriptionId)
-                .titulo(labelFieldDescriptionTitle)
+                .id(MessageUtil.get("label.field.description.id"))
+                .titulo(MessageUtil.get("label.field.description.title"))
                 .valor(pauta.getDescricao())
                 .build());
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.TEXTO)
-                .id(labelFieldDateOpenVoteId)
-                .titulo(labelFieldDateOpenVoteTitle)
+                .id(MessageUtil.get("label.field.date-open-vote.id"))
+                .titulo(MessageUtil.get("label.field.date-open-vote.title"))
                 .valor(pauta.getDataAberturaVotacao())
                 .build());
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.TEXTO)
-                .id(labelFieldDateCloseVoteId)
-                .titulo(labelFieldDateCloseVoteTitle)
+                .id(MessageUtil.get("label.field.date-close-vote.id"))
+                .titulo(MessageUtil.get("label.field.date-close-vote.title"))
                 .valor(pauta.getDataEncerramentoVotacao())
                 .build());
         return TelaFormularioDTO
                 .builder()
                 .tipo(TipoTela.VISUALIZACAO)
-                .titulo(labelPautaViewVisualizeTitle)
+                .titulo(MessageUtil.get("label.pauta-view.visualize.title"))
                 .itens(itens)
                 .botaoOk(buildBotaOkToViewVisualize(pauta, associado))
                 .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listPath))
@@ -201,13 +149,13 @@ public class PautaViewServiceImpl implements PautaViewService {
                 || votoService.findFirstByAssociadoAndPauta(associado, pauta).isPresent()) {
             return null;
         }
-        String texto = labelButtonOpenVote;
+        String texto = MessageUtil.get("label.button.open-vote");
         String url = serverUrl + pautaViewPath + openVotePath + "/" + pauta.getPautaId();
         Map<String, Object> headers = null;
         if (nonNull(pauta.getDataAberturaVotacao())) {
-            texto = labelButtonVote;
+            texto = MessageUtil.get("label.button.vote");
             url = serverUrl + votoViewPath + votePath + pautaPath + "/" + pauta.getPautaId();
-            headers = Map.of(headerAssociadoIdKey, headerAssociadoIdDescValue);
+            headers = getHeadersAssociadoId();
         }
         return BotaoDTO
                 .builder()
@@ -224,23 +172,23 @@ public class PautaViewServiceImpl implements PautaViewService {
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.INPUT_TEXTO)
-                .id(labelFieldNameId)
-                .titulo(labelFieldNameTitle)
+                .id(MessageUtil.get(LABEL_FIELD_NAME_ID))
+                .titulo(MessageUtil.get(LABEL_FIELD_NAME_TITLE))
                 .build());
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.INPUT_TEXTO_AREA)
-                .id(labelFieldDescriptionId)
-                .titulo(labelFieldDescriptionTitle)
+                .id(MessageUtil.get("label.field.description.id"))
+                .titulo(MessageUtil.get("label.field.description.title"))
                 .build());
         return TelaFormularioDTO
                 .builder()
                 .tipo(TipoTela.FORMULARIO)
-                .titulo(labelPautaViewCreateTitle)
+                .titulo(MessageUtil.get("label.pauta-view.create.title"))
                 .itens(itens)
                 .botaoOk(BotaoDTO
                         .builder()
-                        .texto(labelButtonSave)
+                        .texto(MessageUtil.get("label.button.save"))
                         .url(serverUrl + pautaPath)
                         .metodo(HttpMethod.POST)
                         .body(PautaSaveDTO
@@ -263,24 +211,24 @@ public class PautaViewServiceImpl implements PautaViewService {
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.TEXTO)
-                .id(labelFieldNameId)
-                .titulo(labelFieldNameTitle)
+                .id(MessageUtil.get(LABEL_FIELD_NAME_ID))
+                .titulo(MessageUtil.get(LABEL_FIELD_NAME_TITLE))
                 .valor(pauta.getNome())
                 .build());
         itens.add(CampoDTO
                 .builder()
                 .tipo(TipoCampo.INPUT_NUMERO)
-                .id(labelFieldVotingDurationId)
-                .titulo(labelFieldVotingDurationTitle)
+                .id(MessageUtil.get("label.field.voting-duration.id"))
+                .titulo(MessageUtil.get("label.field.voting-duration.title"))
                 .build());
         return TelaFormularioDTO
                 .builder()
                 .tipo(TipoTela.FORMULARIO)
-                .titulo(labelPautaViewOpenVoteTitle)
+                .titulo(MessageUtil.get("label.pauta-view.open-vote.title"))
                 .itens(itens)
                 .botaoOk(BotaoDTO
                         .builder()
-                        .texto(labelButtonSave)
+                        .texto(MessageUtil.get("label.button.save"))
                         .url(serverUrl + pautaPath + "/" + id + openVotePath)
                         .metodo(HttpMethod.PUT)
                         .body(PautaOpenVoteDTO.builder().duracaoVotacao(0).build())
@@ -292,10 +240,14 @@ public class PautaViewServiceImpl implements PautaViewService {
     private BotaoDTO buildBotaoCancelar(String url) {
         return BotaoDTO
                 .builder()
-                .texto(labelButtonBack)
+                .texto(MessageUtil.get("label.button.back"))
                 .url(url)
                 .metodo(HttpMethod.GET)
                 .build();
+    }
+
+    private Map<String, Object> getHeadersAssociadoId() {
+        return Map.of(headerAssociadoIdKey, MessageUtil.get("header.associado-id.desc-value"));
     }
 
 }

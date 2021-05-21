@@ -3,7 +3,7 @@ package br.com.robertocarneiro.pautaapi.services.impl;
 import br.com.robertocarneiro.pautaapi.dtos.PautaSaveDTO;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
 import br.com.robertocarneiro.pautaapi.exceptions.FieldCantBeRepeatException;
-import br.com.robertocarneiro.pautaapi.exceptions.NotFoundException;
+import br.com.robertocarneiro.pautaapi.exceptions.EntityNotFoundException;
 import br.com.robertocarneiro.pautaapi.mappers.PautaSaveDTOMapper;
 import br.com.robertocarneiro.pautaapi.repositories.PautaRepository;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
@@ -28,7 +28,7 @@ public class PautaServiceImpl implements PautaService {
     public Pauta findById(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException(Pauta.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Pauta.class, id));
     }
 
     @Override
