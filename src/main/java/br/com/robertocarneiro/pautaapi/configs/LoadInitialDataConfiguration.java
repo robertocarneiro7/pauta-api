@@ -15,6 +15,9 @@ public class LoadInitialDataConfiguration {
             if (repository.findAll().isEmpty()) {
                 repository.save(Associado.builder().cpf("45547622036").build());
                 repository.save(Associado.builder().cpf("21950795098").build());
+                repository.save(Associado.builder().cpf("62566390061").build());
+                repository.save(Associado.builder().cpf("41135086079").build());
+                repository.save(Associado.builder().cpf("58907189080").build());
                 repository.save(Associado.builder().cpf("00000000000").build());
             }
         };
