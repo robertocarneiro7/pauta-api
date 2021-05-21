@@ -20,7 +20,7 @@ public class PautaController {
         pautaService.save(pautaSaveDTO);
     }
 
-    @PutMapping("/{id}${controller.open-vote.path}")
+    @PutMapping("/{id}${controller.abrir-votacao.path}")
     public void openVote(@PathVariable Long id,
                          @RequestBody @Valid PautaOpenVoteDTO pautaOpenVoteDTO) {
         pautaService.openVote(id, pautaOpenVoteDTO);

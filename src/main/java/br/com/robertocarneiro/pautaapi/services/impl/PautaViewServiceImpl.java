@@ -2,9 +2,11 @@ package br.com.robertocarneiro.pautaapi.services.impl;
 
 import br.com.robertocarneiro.pautaapi.dtos.PautaOpenVoteDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaSaveDTO;
+import br.com.robertocarneiro.pautaapi.dtos.VotoCountDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.*;
 import br.com.robertocarneiro.pautaapi.entities.Associado;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
+import br.com.robertocarneiro.pautaapi.enums.EnumBoolean;
 import br.com.robertocarneiro.pautaapi.enums.TipoCampo;
 import br.com.robertocarneiro.pautaapi.enums.TipoTela;
 import br.com.robertocarneiro.pautaapi.services.AssociadoService;
@@ -37,20 +39,20 @@ public class PautaViewServiceImpl implements PautaViewService {
     @Value("${server.url}")
     private String serverUrl;
 
-    @Value("${controller.list.path}")
-    private String listPath;
+    @Value("${controller.listar.path}")
+    private String listarPath;
 
-    @Value("${controller.create.path}")
-    private String createPath;
+    @Value("${controller.criar.path}")
+    private String criarPath;
 
-    @Value("${controller.visualize.path}")
-    private String visualizePath;
+    @Value("${controller.visualizar.path}")
+    private String visualizarPath;
 
-    @Value("${controller.open-vote.path}")
-    private String openVotePath;
+    @Value("${controller.abrir-votacao.path}")
+    private String abrirVotacaoPath;
 
-    @Value("${controller.vote.path}")
-    private String votePath;
+    @Value("${controller.votar.path}")
+    private String votarPath;
 
     @Value("${controller.pauta-view.path}")
     private String pautaViewPath;
@@ -76,7 +78,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .map(pauta -> SelecaoItemDTO
                         .builder()
                         .texto(pauta.getNome())
-                        .url(serverUrl + pautaViewPath + "/" + pauta.getPautaId() + visualizePath)
+                        .url(serverUrl + pautaViewPath + "/" + pauta.getPautaId() + visualizarPath)
                         .metodo(HttpMethod.GET)
                         .headers(getHeadersAssociadoId())
                         .build())
@@ -89,7 +91,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .botaoOk(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.pauta-view.create.title"))
-                        .url(serverUrl + pautaViewPath + createPath)
+                        .url(serverUrl + pautaViewPath + criarPath)
                         .metodo(HttpMethod.GET)
                         .build())
                 .build();
@@ -131,13 +133,33 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .titulo(MessageUtil.get("label.field.date-close-vote.title"))
                 .valor(pauta.getDataEncerramentoVotacao())
                 .build());
+
+        VotoCountDTO votoCountDTO = votoService.voteCount(pauta);
+        itens.add(CampoDTO
+                .builder()
+                .tipo(TipoCampo.TEXTO)
+                .titulo(MessageUtil.get("label.field.total-vote-by-option.title", EnumBoolean.SIM.getDescricao()))
+                .valor(votoCountDTO.getCountOptionYes())
+                .build());
+        itens.add(CampoDTO
+                .builder()
+                .tipo(TipoCampo.TEXTO)
+                .titulo(MessageUtil.get("label.field.total-vote-by-option.title", EnumBoolean.NAO.getDescricao()))
+                .valor(votoCountDTO.getCountOptionNo())
+                .build());
+        itens.add(CampoDTO
+                .builder()
+                .tipo(TipoCampo.TEXTO)
+                .titulo(MessageUtil.get("label.field.most-voted-option.title"))
+                .valor(votoCountDTO.getMostVoted())
+                .build());
         return TelaFormularioDTO
                 .builder()
                 .tipo(TipoTela.VISUALIZACAO)
                 .titulo(MessageUtil.get("label.pauta-view.visualize.title"))
                 .itens(itens)
                 .botaoOk(buildBotaOkToViewVisualize(pauta, associado))
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listPath))
+                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listarPath))
                 .build();
     }
 
@@ -150,11 +172,11 @@ public class PautaViewServiceImpl implements PautaViewService {
             return null;
         }
         String texto = MessageUtil.get("label.button.open-vote");
-        String url = serverUrl + pautaViewPath + "/" + pauta.getPautaId() + openVotePath;
+        String url = serverUrl + pautaViewPath + "/" + pauta.getPautaId() + abrirVotacaoPath;
         Map<String, Object> headers = null;
         if (nonNull(pauta.getDataAberturaVotacao())) {
             texto = MessageUtil.get("label.button.vote");
-            url = serverUrl + votoViewPath + votePath + pautaPath + "/" + pauta.getPautaId();
+            url = serverUrl + votoViewPath + votarPath + pautaPath + "/" + pauta.getPautaId();
             headers = getHeadersAssociadoId();
         }
         return BotaoDTO
@@ -197,7 +219,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                                 .descricao("")
                                 .build())
                         .build())
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listPath))
+                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listarPath))
                 .build();
     }
 
@@ -226,11 +248,11 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .botaoOk(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.save"))
-                        .url(serverUrl + pautaPath + "/" + id + openVotePath)
+                        .url(serverUrl + pautaPath + "/" + id + abrirVotacaoPath)
                         .metodo(HttpMethod.PUT)
                         .body(PautaOpenVoteDTO.builder().duracaoVotacao(1L).build())
                         .build())
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + "/" + id + visualizePath))
+                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + "/" + id + visualizarPath))
                 .build();
     }
 

@@ -36,14 +36,11 @@ public class VotoViewServiceImpl implements VotoViewService {
     @Value("${server.url}")
     private String serverUrl;
 
-    @Value("${controller.visualize.path}")
-    private String visualizePath;
+    @Value("${controller.visualizar.path}")
+    private String visualizarPath;
 
-    @Value("${controller.open-vote.path}")
-    private String openVotePath;
-
-    @Value("${controller.vote.path}")
-    private String votePath;
+    @Value("${controller.voto.path}")
+    private String votoPath;
 
     @Value("${controller.pauta-view.path}")
     private String pautaViewPath;
@@ -84,7 +81,7 @@ public class VotoViewServiceImpl implements VotoViewService {
                 .botaoOk(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.save"))
-                        .url(serverUrl + votePath + pautaPath + "/" + pautaId)
+                        .url(serverUrl + votoPath + pautaPath + "/" + pautaId)
                         .metodo(HttpMethod.POST)
                         .body(VotoSaveDTO.builder().resposta("").build())
                         .headers(Map.of(headerAssociadoIdKey, MessageUtil.get("header.associado-id.desc-value")))
@@ -92,7 +89,7 @@ public class VotoViewServiceImpl implements VotoViewService {
                 .botaoCancelar(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.back"))
-                        .url(serverUrl + pautaViewPath + "/" + pautaId + visualizePath)
+                        .url(serverUrl + pautaViewPath + "/" + pautaId + visualizarPath)
                         .metodo(HttpMethod.GET)
                         .build())
                 .build();

@@ -13,24 +13,24 @@ public class PautaViewController {
 
     private final PautaViewService pautaViewService;
 
-    @GetMapping("${controller.list.path}")
+    @GetMapping("${controller.listar.path}")
     public TelaSelecaoDTO viewList() {
         return pautaViewService.viewList();
     }
 
-    @GetMapping("/{id}${controller.visualize.path}")
+    @GetMapping("/{id}${controller.visualizar.path}")
     public TelaFormularioDTO viewVisualize(
             @PathVariable Long id,
             @RequestHeader(name = "${header.associado-id.key}", required = false) Long associadoId) {
         return pautaViewService.viewVisualize(id, associadoId);
     }
 
-    @GetMapping("${controller.create.path}")
+    @GetMapping("${controller.criar.path}")
     public TelaFormularioDTO viewCreate() {
         return pautaViewService.viewCreate();
     }
 
-    @GetMapping("/{id}${controller.open-vote.path}")
+    @GetMapping("/{id}${controller.abrir-votacao.path}")
     public TelaFormularioDTO viewOpenVote(@PathVariable Long id) {
         return pautaViewService.viewOpenVote(id);
     }
