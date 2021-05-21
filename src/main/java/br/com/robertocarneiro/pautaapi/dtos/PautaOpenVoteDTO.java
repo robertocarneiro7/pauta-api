@@ -2,7 +2,7 @@ package br.com.robertocarneiro.pautaapi.dtos;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 
 @Getter
 @Setter
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class PautaOpenVoteDTO {
 
-    @NotBlank
-    private Integer duracaoVotacao;
+    @Min(value = 1)
+    private Long duracaoVotacao;
 
 }

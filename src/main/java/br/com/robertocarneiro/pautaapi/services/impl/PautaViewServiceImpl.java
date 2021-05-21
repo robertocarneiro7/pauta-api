@@ -7,7 +7,6 @@ import br.com.robertocarneiro.pautaapi.entities.Associado;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
 import br.com.robertocarneiro.pautaapi.enums.TipoCampo;
 import br.com.robertocarneiro.pautaapi.enums.TipoTela;
-import br.com.robertocarneiro.pautaapi.exceptions.VoteAlreadyOpenException;
 import br.com.robertocarneiro.pautaapi.services.AssociadoService;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
 import br.com.robertocarneiro.pautaapi.services.PautaViewService;
@@ -150,7 +149,7 @@ public class PautaViewServiceImpl implements PautaViewService {
             return null;
         }
         String texto = MessageUtil.get("label.button.open-vote");
-        String url = serverUrl + pautaViewPath + openVotePath + "/" + pauta.getPautaId();
+        String url = serverUrl + pautaViewPath + "/" + pauta.getPautaId() + openVotePath;
         Map<String, Object> headers = null;
         if (nonNull(pauta.getDataAberturaVotacao())) {
             texto = MessageUtil.get("label.button.vote");
@@ -193,8 +192,8 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .metodo(HttpMethod.POST)
                         .body(PautaSaveDTO
                                 .builder()
-                                .nome("")
-                                .descricao("")
+                                .nome(null)
+                                .descricao(null)
                                 .build())
                         .build())
                 .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listPath))
@@ -203,10 +202,7 @@ public class PautaViewServiceImpl implements PautaViewService {
 
     @Override
     public TelaFormularioDTO viewOpenVote(Long id) {
-        Pauta pauta = pautaService.findById(id);
-        if (nonNull(pauta.getDataAberturaVotacao()) || nonNull(pauta.getDataEncerramentoVotacao())) {
-            throw new VoteAlreadyOpenException(Pauta.class, id);
-        }
+        Pauta pauta = pautaService.validateIfCanOpenVote(id);
         List<CampoDTO> itens = new ArrayList<>();
         itens.add(CampoDTO
                 .builder()
@@ -231,7 +227,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .texto(MessageUtil.get("label.button.save"))
                         .url(serverUrl + pautaPath + "/" + id + openVotePath)
                         .metodo(HttpMethod.PUT)
-                        .body(PautaOpenVoteDTO.builder().duracaoVotacao(0).build())
+                        .body(PautaOpenVoteDTO.builder().duracaoVotacao(null).build())
                         .build())
                 .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + visualizePath + "/" + id))
                 .build();

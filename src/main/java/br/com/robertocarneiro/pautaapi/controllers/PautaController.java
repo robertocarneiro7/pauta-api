@@ -1,12 +1,10 @@
 package br.com.robertocarneiro.pautaapi.controllers;
 
+import br.com.robertocarneiro.pautaapi.dtos.PautaOpenVoteDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaSaveDTO;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -20,5 +18,11 @@ public class PautaController {
     @PostMapping
     public void save(@RequestBody @Valid PautaSaveDTO pautaSaveDTO) {
         pautaService.save(pautaSaveDTO);
+    }
+
+    @PutMapping("/{id}${controller.open-vote.path}")
+    public void openVote(@PathVariable Long id,
+                         @RequestBody @Valid PautaOpenVoteDTO pautaOpenVoteDTO) {
+        pautaService.openVote(id, pautaOpenVoteDTO);
     }
 }
