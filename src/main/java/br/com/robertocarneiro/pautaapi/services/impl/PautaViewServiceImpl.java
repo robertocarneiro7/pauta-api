@@ -78,7 +78,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .map(pauta -> SelecaoItemDTO
                         .builder()
                         .texto(pauta.getNome())
-                        .url(serverUrl + pautaViewPath + "/" + pauta.getPautaId() + visualizarPath)
+                        .url(serverUrl + pautaViewPath + visualizarPath + pautaPath + "/" + pauta.getPautaId())
                         .metodo(HttpMethod.GET)
                         .headers(getHeadersAssociadoId())
                         .build())
@@ -98,8 +98,8 @@ public class PautaViewServiceImpl implements PautaViewService {
     }
 
     @Override
-    public TelaFormularioDTO viewVisualize(Long id, Long associadoId) {
-        Pauta pauta = pautaService.findById(id);
+    public TelaFormularioDTO viewVisualize(Long pautaId, Long associadoId) {
+        Pauta pauta = pautaService.findById(pautaId);
         Associado associado = null;
         if (nonNull(associadoId)) {
             associado = associadoService.findById(associadoId);
@@ -172,7 +172,7 @@ public class PautaViewServiceImpl implements PautaViewService {
             return null;
         }
         String texto = MessageUtil.get("label.button.open-vote");
-        String url = serverUrl + pautaViewPath + "/" + pauta.getPautaId() + abrirVotacaoPath;
+        String url = serverUrl + pautaViewPath + abrirVotacaoPath + pautaPath + "/" + pauta.getPautaId();
         Map<String, Object> headers = null;
         if (nonNull(pauta.getDataAberturaVotacao())) {
             texto = MessageUtil.get("label.button.vote");
@@ -224,8 +224,8 @@ public class PautaViewServiceImpl implements PautaViewService {
     }
 
     @Override
-    public TelaFormularioDTO viewOpenVote(Long id) {
-        Pauta pauta = pautaService.validateIfCanOpenVote(id);
+    public TelaFormularioDTO viewOpenVote(Long pautaId) {
+        Pauta pauta = pautaService.validateIfCanOpenVote(pautaId);
         List<CampoDTO> itens = new ArrayList<>();
         itens.add(CampoDTO
                 .builder()
@@ -248,11 +248,11 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .botaoOk(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.save"))
-                        .url(serverUrl + pautaPath + "/" + id + abrirVotacaoPath)
+                        .url(serverUrl + pautaPath + "/" + pautaId + abrirVotacaoPath)
                         .metodo(HttpMethod.PUT)
                         .body(PautaOpenVoteDTO.builder().duracaoVotacao(1L).build())
                         .build())
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + "/" + id + visualizarPath))
+                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + visualizarPath + pautaPath + "/" + pautaId))
                 .build();
     }
 

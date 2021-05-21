@@ -89,7 +89,7 @@ public class VotoViewServiceImpl implements VotoViewService {
                 .botaoCancelar(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.back"))
-                        .url(serverUrl + pautaViewPath + "/" + pautaId + visualizarPath)
+                        .url(serverUrl + pautaViewPath + visualizarPath + pautaPath + "/" + pautaId)
                         .metodo(HttpMethod.GET)
                         .build())
                 .build();

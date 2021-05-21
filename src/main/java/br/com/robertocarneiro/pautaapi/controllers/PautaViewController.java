@@ -18,11 +18,11 @@ public class PautaViewController {
         return pautaViewService.viewList();
     }
 
-    @GetMapping("/{id}${controller.visualizar.path}")
+    @GetMapping("${controller.visualizar.path}${controller.pauta.path}/{pautaId}")
     public TelaFormularioDTO viewVisualize(
-            @PathVariable Long id,
+            @PathVariable Long pautaId,
             @RequestHeader(name = "${header.associado-id.key}", required = false) Long associadoId) {
-        return pautaViewService.viewVisualize(id, associadoId);
+        return pautaViewService.viewVisualize(pautaId, associadoId);
     }
 
     @GetMapping("${controller.criar.path}")
@@ -30,9 +30,9 @@ public class PautaViewController {
         return pautaViewService.viewCreate();
     }
 
-    @GetMapping("/{id}${controller.abrir-votacao.path}")
-    public TelaFormularioDTO viewOpenVote(@PathVariable Long id) {
-        return pautaViewService.viewOpenVote(id);
+    @GetMapping("${controller.abrir-votacao.path}${controller.pauta.path}/{pautaId}")
+    public TelaFormularioDTO viewOpenVote(@PathVariable Long pautaId) {
+        return pautaViewService.viewOpenVote(pautaId);
     }
 
 }
