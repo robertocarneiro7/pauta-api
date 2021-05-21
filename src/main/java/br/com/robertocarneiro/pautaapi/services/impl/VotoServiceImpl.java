@@ -1,5 +1,6 @@
 package br.com.robertocarneiro.pautaapi.services.impl;
 
+import br.com.robertocarneiro.pautaapi.dtos.UserByCpfDTO;
 import br.com.robertocarneiro.pautaapi.dtos.VotoCountDTO;
 import br.com.robertocarneiro.pautaapi.dtos.VotoSaveDTO;
 import br.com.robertocarneiro.pautaapi.entities.Associado;
@@ -7,9 +8,11 @@ import br.com.robertocarneiro.pautaapi.entities.Pauta;
 import br.com.robertocarneiro.pautaapi.entities.Voto;
 import br.com.robertocarneiro.pautaapi.enums.EnumBoolean;
 import br.com.robertocarneiro.pautaapi.exceptions.AlreadyVotedException;
+import br.com.robertocarneiro.pautaapi.exceptions.ExternalServiceDidNotAllowVoteException;
 import br.com.robertocarneiro.pautaapi.exceptions.VoteClosedException;
 import br.com.robertocarneiro.pautaapi.exceptions.VoteHasNotYetBeenOpenedException;
 import br.com.robertocarneiro.pautaapi.repositories.VotoRepository;
+import br.com.robertocarneiro.pautaapi.restclients.UserServiceClient;
 import br.com.robertocarneiro.pautaapi.services.AssociadoService;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
 import br.com.robertocarneiro.pautaapi.services.VotoService;
@@ -29,6 +32,7 @@ public class VotoServiceImpl implements VotoService {
     private final VotoRepository repository;
     private final PautaService pautaService;
     private final AssociadoService associadoService;
+    private final UserServiceClient userServiceClient;
 
     private static final String EMPATE = "EMPATE";
 
@@ -42,6 +46,11 @@ public class VotoServiceImpl implements VotoService {
         Associado associado = associadoService.findById(associadoId);
         Pauta pauta = pautaService.findById(pautaId);
         validateIfCanVote(associado, pauta);
+
+        UserByCpfDTO userByCpf = userServiceClient.findUserByCpf(associado.getCpf());
+        if (!userByCpf.getStatus().isEnable()) {
+            throw new ExternalServiceDidNotAllowVoteException(associado.getCpf());
+        }
 
         Voto voto = Voto
                 .builder()
