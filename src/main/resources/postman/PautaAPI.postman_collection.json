@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "6fda07b2-4762-48f9-8275-0bf68d550fee",
+		"name": "PautaAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PautaViewList",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/pauta-view/listar"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaViewCreate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/pauta-view/criar"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaCreate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Pauta 5\",\r\n    \"descricao\": \"Descrição Pauta 5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/pauta"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaViewVisualize",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Associado-Id",
+						"value": "5",
+						"type": "text"
+					}
+				],
+				"url": "localhost:8080/pauta-view/visualizar/pauta/2"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaViewOpenVote",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Associado-Id",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": "localhost:8080/pauta-view/abrir-votacao/pauta/2"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaOpenVote",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Associado-Id",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"duracaoVotacao\": 10000000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/pauta/3/abrir-votacao"
+			},
+			"response": []
+		},
+		{
+			"name": "VotoViewVote",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Associado-Id",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": "localhost:8080/voto-view/votar/pauta/5"
+			},
+			"response": []
+		},
+		{
+			"name": "VotoCreate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Associado-Id",
+						"value": "5",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"resposta\": \"Sim\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/voto/pauta/3"
+			},
+			"response": []
+		}
+	]
+}
