@@ -10,4 +10,6 @@ public interface PautaViewService {
     TelaFormularioDTO viewVisualize(Long id, Long associadoId);
 
     TelaFormularioDTO viewCreate();
+
+    TelaFormularioDTO viewOpenVote(Long id);
 }

@@ -16,5 +16,5 @@ public class CampoDTO {
     private String texto;
     private String id;
     private String titulo;
-    private String valor;
+    private Object valor;
 }
