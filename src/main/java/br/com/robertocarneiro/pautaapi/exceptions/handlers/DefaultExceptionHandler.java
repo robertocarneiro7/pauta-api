@@ -3,6 +3,7 @@ package br.com.robertocarneiro.pautaapi.exceptions.handlers;
 import br.com.robertocarneiro.pautaapi.exceptions.DefaultException;
 import br.com.robertocarneiro.pautaapi.exceptions.dtos.ResponseExceptionDTO;
 import br.com.robertocarneiro.pautaapi.utils.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
+@Slf4j
 @ControllerAdvice
 public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -40,6 +42,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(exception.getMessage())
                 .path(request.getRequest().getRequestURL().toString())
                 .build();
+        log.error(exception.getMessage(), exception);
         return new ResponseEntity<>(dto, status);
     }
 
@@ -53,10 +56,11 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
                         .getBindingResult()
                         .getAllErrors()
                         .stream()
-                        .map(error -> getMessage(error))
+                        .map(this::getMessage)
                         .collect(Collectors.joining("\n")))
                 .path(((ServletWebRequest)request).getRequest().getRequestURL().toString())
                 .build();
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(dto, status);
     }
 
