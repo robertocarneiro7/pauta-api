@@ -34,3 +34,6 @@ build/
 
 ### Logs ###
 logs/
+
+### H2-DB ###
+*.mv.db
