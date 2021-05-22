@@ -3,12 +3,12 @@ package br.com.robertocarneiro.pautaapi.services;
 import br.com.robertocarneiro.pautaapi.dtos.PautaOpenVoteDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaSaveDTO;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PautaService {
 
-    List<Pauta> findAll();
+    Page<Pauta> findAll(Pageable pageable);
 
     Pauta findById(Long id);
 

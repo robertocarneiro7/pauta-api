@@ -1,6 +1,7 @@
 package br.com.robertocarneiro.pautaapi.controllers;
 
 import br.com.robertocarneiro.pautaapi.dtos.AssociadoDTO;
+import br.com.robertocarneiro.pautaapi.dtos.AssociadoPageDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaViewOpenVoteDTO;
 import br.com.robertocarneiro.pautaapi.dtos.PautaVisualizeDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.TelaFormularioDTO;
@@ -22,8 +23,8 @@ public class PautaViewController {
     private final PautaViewService pautaViewService;
 
     @PostMapping("${controller.listar.path}")
-    public TelaSelecaoDTO viewList(@RequestBody AssociadoDTO dto) {
-        return pautaViewService.viewList(dto.getAssociadoId());
+    public TelaSelecaoDTO viewList(@RequestBody @Valid AssociadoPageDTO dto) {
+        return pautaViewService.viewList(dto);
     }
 
     @PostMapping("${controller.visualizar.path}")

@@ -14,6 +14,8 @@ import br.com.robertocarneiro.pautaapi.services.VotoService;
 import br.com.robertocarneiro.pautaapi.utils.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -64,12 +66,13 @@ public class PautaViewServiceImpl implements PautaViewService {
     private static final String LABEL_FIELD_NAME_TITLE = "label.field.name.title";
 
     @Override
-    public TelaSelecaoDTO viewList(Long associadoId) {
+    public TelaSelecaoDTO viewList(AssociadoPageDTO dto) {
+        Long associadoId = dto.getAssociadoId();
         if (nonNull(associadoId)) {
             associadoService.findById(associadoId);
         }
-        List<SelecaoItemDTO> itens = pautaService
-                .findAll()
+        Page<Pauta> pautasPage = pautaService.findAll(PageRequest.of(dto.getPagina(), dto.getTamanho()));
+        List<SelecaoItemDTO> itens = pautasPage
                 .stream()
                 .map(pauta -> SelecaoItemDTO
                         .builder()
@@ -88,6 +91,13 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .texto(MessageUtil.get("label.pauta-view.create.title"))
                         .url(serverUrl + pautaViewPath + criarPath)
                         .body(AssociadoDTO.builder().associadoId(associadoId).build())
+                        .build())
+                .paginacao(PageDTO
+                        .builder()
+                        .total(pautasPage.getTotalElements())
+                        .totalPaginas(pautasPage.getTotalPages())
+                        .pagina(pautasPage.getPageable().getPageNumber())
+                        .tamanho(pautasPage.getPageable().getPageSize())
                         .build())
                 .build();
     }

@@ -1,5 +1,6 @@
 package br.com.robertocarneiro.pautaapi.dtos.view;
 
+import br.com.robertocarneiro.pautaapi.dtos.PageDTO;
 import br.com.robertocarneiro.pautaapi.enums.TipoTela;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +19,5 @@ public class TelaSelecaoDTO {
     private String titulo;
     private List<SelecaoItemDTO> itens;
     private BotaoDTO botaoOk;
+    private PageDTO paginacao;
 }

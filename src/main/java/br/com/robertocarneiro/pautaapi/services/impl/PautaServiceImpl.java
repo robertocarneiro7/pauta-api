@@ -11,10 +11,11 @@ import br.com.robertocarneiro.pautaapi.repositories.PautaRepository;
 import br.com.robertocarneiro.pautaapi.services.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -30,8 +31,8 @@ public class PautaServiceImpl implements PautaService {
     private Long defaultVotingDuration;
 
     @Override
-    public List<Pauta> findAll() {
-        return repository.findAll();
+    public Page<Pauta> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
