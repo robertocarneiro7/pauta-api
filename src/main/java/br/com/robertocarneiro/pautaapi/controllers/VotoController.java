@@ -21,7 +21,7 @@ public class VotoController {
     public void save(
             @RequestBody @Valid VotoSaveDTO votoSaveDTO,
             @PathVariable Long pautaId,
-            @RequestHeader(name = "${header.associado-id.key}", required = false) @NotNull Long associadoId) {
+            @RequestHeader(name = "Associado-Id", required = false) @NotNull Long associadoId) {
         votoService.save(votoSaveDTO, pautaId, associadoId);
     }
 

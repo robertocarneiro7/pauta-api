@@ -47,7 +47,7 @@ As entidades criadas na aplicação, seguindo o formato "noJava => NO_BANCO":
     - Dependência utilizada na API para geração automática de códigos através de suas anotações, como **@Setter**, **@Getter** e **@RequiredArgsConstructor**.
 10. **Mapstruct**:
     - Dependência utilizada na API para facilitar na conversão de Entidade para DTO e de DTO para Entidade
-11. **Springdoc-Openapi-Ui**
+11. **Springfox-Swagger**
     - Dependência utilizada na API para gerar a documentação(Swagger) da API
 
 ## Dicas para rodar a aplicação
@@ -58,7 +58,7 @@ Para simplificar o uso, recomendo a utilização do Intellij.
 
 ## Observações Importantes
 1. Swagger está rodando no seguinte caminho:
-    - http://localhost:8080/swagger-ui.html
+    - http://localhost:8080/swagger-ui/
 2. Os logs estão sendo gerados na pasta "logs", que está na raiz do projeto(Essa pasta está no .gitignore)
 3. A collection do postman, com os recursos da API, está no seguinte path:
     - ***src/main/resources/postman/PautaAPI.postman_collection.json***

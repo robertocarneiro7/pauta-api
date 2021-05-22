@@ -21,7 +21,7 @@ public class PautaViewController {
     @GetMapping("${controller.visualizar.path}${controller.pauta.path}/{pautaId}")
     public TelaFormularioDTO viewVisualize(
             @PathVariable Long pautaId,
-            @RequestHeader(name = "${header.associado-id.key}", required = false) Long associadoId) {
+            @RequestHeader(name = "Associado-Id", required = false) Long associadoId) {
         return pautaViewService.viewVisualize(pautaId, associadoId);
     }
 
