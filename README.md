@@ -62,3 +62,5 @@ Para simplificar o uso, recomendo a utilização do Intellij.
 2. Os logs estão sendo gerados na pasta "logs", que está na raiz do projeto(Essa pasta está no .gitignore)
 3. A collection do postman, com os recursos da API, está no seguinte path:
     - ***src/main/resources/postman/PautaAPI.postman_collection.json***
+4. Console do banco de dados está rodando no seguinte caminho:
+    - http://localhost:8080/h2-console
