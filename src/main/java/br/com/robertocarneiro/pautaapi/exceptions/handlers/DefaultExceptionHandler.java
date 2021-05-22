@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -33,35 +35,45 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         if (exception instanceof DefaultException) {
             status = ((DefaultException) exception).getHttpStatus();
+        } else if (exception instanceof ConstraintViolationException) {
+            status = HttpStatus.BAD_REQUEST;
         }
-        ResponseExceptionDTO dto = ResponseExceptionDTO
-                .builder()
-                .timestamp(LocalDateTime.now())
-                .status(status.value())
-                .error(status.getReasonPhrase())
-                .message(exception.getMessage())
-                .path(request.getRequest().getRequestURL().toString())
-                .build();
-        log.error(exception.getMessage(), exception);
+        ResponseExceptionDTO dto = getResponseExceptionDTO(exception, exception.getMessage(), request, status);
         return new ResponseEntity<>(dto, status);
     }
 
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ResponseExceptionDTO dto = ResponseExceptionDTO
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+        String message = getAllErrors(exception.getBindingResult());
+        ResponseExceptionDTO dto = getResponseExceptionDTO(exception, message, (ServletWebRequest) request, status);
+        return new ResponseEntity<>(dto, status);
+    }
+
+    private ResponseExceptionDTO getResponseExceptionDTO(
+            Exception exception,
+            String message,
+            ServletWebRequest request,
+            HttpStatus status) {
+        log.error(exception.getMessage(), exception);
+        return ResponseExceptionDTO
                 .builder()
                 .timestamp(LocalDateTime.now())
                 .status(status.value())
                 .error(status.getReasonPhrase())
-                .message(ex
-                        .getBindingResult()
-                        .getAllErrors()
-                        .stream()
-                        .map(this::getMessage)
-                        .collect(Collectors.joining("\n")))
-                .path(((ServletWebRequest)request).getRequest().getRequestURL().toString())
+                .message(message)
+                .path(request.getRequest().getRequestURL().toString())
                 .build();
-        log.error(ex.getMessage(), ex);
-        return new ResponseEntity<>(dto, status);
+    }
+
+    private String getAllErrors(BindingResult bindingResult) {
+        return bindingResult
+                .getAllErrors()
+                .stream()
+                .map(this::getMessage)
+                .collect(Collectors.joining("\n"));
     }
 
     private String getMessage(ObjectError error) {
