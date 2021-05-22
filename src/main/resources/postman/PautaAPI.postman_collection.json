@@ -6,10 +6,51 @@
 	},
 	"item": [
 		{
+			"name": "TesteVersionamento",
+			"item": [
+				{
+					"name": "Com Versão v0",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8080/v0/teste-versao"
+					},
+					"response": []
+				},
+				{
+					"name": "Com Versão v1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8080/v1/teste-versao"
+					},
+					"response": []
+				},
+				{
+					"name": "Sem Versão",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8080/teste-versao"
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "PautaViewList",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"associadoId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": "localhost:8080/pauta-view/listar"
 			},
 			"response": []
@@ -17,8 +58,17 @@
 		{
 			"name": "PautaViewCreate",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"associadoId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": "localhost:8080/pauta-view/criar"
 			},
 			"response": []
@@ -44,69 +94,72 @@
 		{
 			"name": "PautaViewVisualize",
 			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Associado-Id",
-						"value": "5",
-						"type": "text"
-					}
-				],
-				"url": "localhost:8080/pauta-view/visualizar/pauta/2"
-			},
-			"response": []
-		},
-		{
-			"name": "PautaViewOpenVote",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Associado-Id",
-						"value": "1",
-						"type": "text"
-					}
-				],
-				"url": "localhost:8080/pauta-view/abrir-votacao/pauta/2"
-			},
-			"response": []
-		},
-		{
-			"name": "PautaOpenVote",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Associado-Id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"method": "POST",
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"duracaoVotacao\": 10000000\r\n}",
+					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "localhost:8080/pauta/3/abrir-votacao"
+				"url": "localhost:8080/pauta-view/visualizar"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaViewOpenVote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/pauta-view/abrir-votacao"
+			},
+			"response": []
+		},
+		{
+			"name": "PautaOpenVote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"duracaoVotacao\": 10000000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/pauta/abrir-votacao"
 			},
 			"response": []
 		},
 		{
 			"name": "VotoViewVote",
 			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Associado-Id",
-						"value": "1",
-						"type": "text"
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
 					}
-				],
-				"url": "localhost:8080/voto-view/votar/pauta/5"
+				},
+				"url": "localhost:8080/voto-view/votar"
 			},
 			"response": []
 		},
@@ -114,23 +167,17 @@
 			"name": "VotoCreate",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Associado-Id",
-						"value": "5",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"resposta\": \"Sim\"\r\n}",
+					"raw": "{\r\n    \"resposta\": \"Sim\",\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "localhost:8080/voto/pauta/3"
+				"url": "localhost:8080/voto"
 			},
 			"response": []
 		}
