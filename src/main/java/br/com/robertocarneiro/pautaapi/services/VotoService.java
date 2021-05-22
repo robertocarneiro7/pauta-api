@@ -12,7 +12,7 @@ public interface VotoService {
 
     Optional<Voto> findFirstByAssociadoAndPauta(Associado associado, Pauta pauta);
 
-    void save(VotoSaveDTO votoSaveDTO, Long pautaId, Long associadoId);
+    void save(VotoSaveDTO votoSaveDTO);
 
     VotoCountDTO voteCount(Pauta pauta);
 

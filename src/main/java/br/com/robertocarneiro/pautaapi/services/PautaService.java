@@ -14,7 +14,7 @@ public interface PautaService {
 
     void save(PautaSaveDTO pautaSaveDTO);
 
-    void openVote(Long id, PautaOpenVoteDTO pautaOpenVoteDTO);
+    void openVote(PautaOpenVoteDTO pautaOpenVoteDTO);
 
     Pauta validateIfCanOpenVote(Long id);
 }

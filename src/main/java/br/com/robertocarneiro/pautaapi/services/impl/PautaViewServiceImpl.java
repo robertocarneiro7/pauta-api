@@ -1,8 +1,6 @@
 package br.com.robertocarneiro.pautaapi.services.impl;
 
-import br.com.robertocarneiro.pautaapi.dtos.PautaOpenVoteDTO;
-import br.com.robertocarneiro.pautaapi.dtos.PautaSaveDTO;
-import br.com.robertocarneiro.pautaapi.dtos.VotoCountDTO;
+import br.com.robertocarneiro.pautaapi.dtos.*;
 import br.com.robertocarneiro.pautaapi.dtos.view.*;
 import br.com.robertocarneiro.pautaapi.entities.Associado;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
@@ -16,13 +14,11 @@ import br.com.robertocarneiro.pautaapi.services.VotoService;
 import br.com.robertocarneiro.pautaapi.utils.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
@@ -63,24 +59,23 @@ public class PautaViewServiceImpl implements PautaViewService {
     @Value("${controller.voto-view.path}")
     private String votoViewPath;
 
-    @Value("${header.associado-id.key}")
-    private String headerAssociadoIdKey;
-
     private static final String LABEL_FIELD_NAME_ID = "label.field.name.id";
 
     private static final String LABEL_FIELD_NAME_TITLE = "label.field.name.title";
 
     @Override
-    public TelaSelecaoDTO viewList() {
+    public TelaSelecaoDTO viewList(Long associadoId) {
+        if (nonNull(associadoId)) {
+            associadoService.findById(associadoId);
+        }
         List<SelecaoItemDTO> itens = pautaService
                 .findAll()
                 .stream()
                 .map(pauta -> SelecaoItemDTO
                         .builder()
                         .texto(pauta.getNome())
-                        .url(serverUrl + pautaViewPath + visualizarPath + pautaPath + "/" + pauta.getPautaId())
-                        .metodo(HttpMethod.GET)
-                        .headers(getHeadersAssociadoId())
+                        .url(serverUrl + pautaViewPath + visualizarPath)
+                        .body(PautaVisualizeDTO.builder().pautaId(pauta.getPautaId()).associadoId(associadoId).build())
                         .build())
                 .collect(Collectors.toList());
         return TelaSelecaoDTO
@@ -92,7 +87,7 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .builder()
                         .texto(MessageUtil.get("label.pauta-view.create.title"))
                         .url(serverUrl + pautaViewPath + criarPath)
-                        .metodo(HttpMethod.GET)
+                        .body(AssociadoDTO.builder().associadoId(associadoId).build())
                         .build())
                 .build();
     }
@@ -159,7 +154,9 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .titulo(MessageUtil.get("label.pauta-view.visualize.title"))
                 .itens(itens)
                 .botaoOk(buildBotaOkToViewVisualize(pauta, associado))
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listarPath))
+                .botaoCancelar(
+                        buildBotaoCancelar(serverUrl + pautaViewPath + listarPath,
+                                AssociadoDTO.builder().associadoId(associadoId).build()))
                 .build();
     }
 
@@ -172,24 +169,26 @@ public class PautaViewServiceImpl implements PautaViewService {
             return null;
         }
         String texto = MessageUtil.get("label.button.open-vote");
-        String url = serverUrl + pautaViewPath + abrirVotacaoPath + pautaPath + "/" + pauta.getPautaId();
-        Map<String, Object> headers = null;
+        String url = serverUrl + pautaViewPath + abrirVotacaoPath;
+        Object body = PautaViewOpenVoteDTO.builder().pautaId(pauta.getPautaId()).associadoId(associado.getAssociadoId()).build();
         if (nonNull(pauta.getDataAberturaVotacao())) {
             texto = MessageUtil.get("label.button.vote");
-            url = serverUrl + votoViewPath + votarPath + pautaPath + "/" + pauta.getPautaId();
-            headers = getHeadersAssociadoId();
+            url = serverUrl + votoViewPath + votarPath;
+            body = VotoViewDTO.builder().pautaId(pauta.getPautaId()).associadoId(associado.getAssociadoId()).build();
         }
         return BotaoDTO
                 .builder()
                 .texto(texto)
                 .url(url)
-                .metodo(HttpMethod.GET)
-                .headers(headers)
+                .body(body)
                 .build();
     }
 
     @Override
-    public TelaFormularioDTO viewCreate() {
+    public TelaFormularioDTO viewCreate(Long associadoId) {
+        if (nonNull(associadoId)) {
+            associadoService.findById(associadoId);
+        }
         List<CampoDTO> itens = new ArrayList<>();
         itens.add(CampoDTO
                 .builder()
@@ -212,19 +211,18 @@ public class PautaViewServiceImpl implements PautaViewService {
                         .builder()
                         .texto(MessageUtil.get("label.button.save"))
                         .url(serverUrl + pautaPath)
-                        .metodo(HttpMethod.POST)
-                        .body(PautaSaveDTO
-                                .builder()
-                                .nome("")
-                                .descricao("")
-                                .build())
+                        .body(PautaSaveDTO.builder().build())
                         .build())
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listarPath))
+                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + listarPath,
+                        AssociadoDTO.builder().associadoId(associadoId).build()))
                 .build();
     }
 
     @Override
-    public TelaFormularioDTO viewOpenVote(Long pautaId) {
+    public TelaFormularioDTO viewOpenVote(Long pautaId, Long associadoId) {
+        if (nonNull(associadoId)) {
+            associadoService.findById(associadoId);
+        }
         Pauta pauta = pautaService.validateIfCanOpenVote(pautaId);
         List<CampoDTO> itens = new ArrayList<>();
         itens.add(CampoDTO
@@ -248,25 +246,22 @@ public class PautaViewServiceImpl implements PautaViewService {
                 .botaoOk(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.save"))
-                        .url(serverUrl + pautaPath + "/" + pautaId + abrirVotacaoPath)
-                        .metodo(HttpMethod.PUT)
-                        .body(PautaOpenVoteDTO.builder().duracaoVotacao(1L).build())
+                        .url(serverUrl + pautaPath + abrirVotacaoPath)
+                        .body(PautaOpenVoteDTO.builder().pautaId(pautaId).build())
                         .build())
-                .botaoCancelar(buildBotaoCancelar(serverUrl + pautaViewPath + visualizarPath + pautaPath + "/" + pautaId))
+                .botaoCancelar(
+                        buildBotaoCancelar(serverUrl + pautaViewPath + visualizarPath,
+                                PautaVisualizeDTO.builder().pautaId(pautaId).associadoId(associadoId).build()))
                 .build();
     }
 
-    private BotaoDTO buildBotaoCancelar(String url) {
+    private BotaoDTO buildBotaoCancelar(String url, Object body) {
         return BotaoDTO
                 .builder()
                 .texto(MessageUtil.get("label.button.back"))
                 .url(url)
-                .metodo(HttpMethod.GET)
+                .body(body)
                 .build();
-    }
-
-    private Map<String, Object> getHeadersAssociadoId() {
-        return Map.of(headerAssociadoIdKey, MessageUtil.get("header.associado-id.desc-value"));
     }
 
 }

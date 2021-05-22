@@ -5,11 +5,11 @@ import br.com.robertocarneiro.pautaapi.dtos.view.TelaSelecaoDTO;
 
 public interface PautaViewService {
 
-    TelaSelecaoDTO viewList();
+    TelaSelecaoDTO viewList(Long associadoId);
 
-    TelaFormularioDTO viewVisualize(Long id, Long associadoId);
+    TelaFormularioDTO viewVisualize(Long pautaId, Long associadoId);
 
-    TelaFormularioDTO viewCreate();
+    TelaFormularioDTO viewCreate(Long associadoId);
 
-    TelaFormularioDTO viewOpenVote(Long id);
+    TelaFormularioDTO viewOpenVote(Long pautaId, Long associadoId);
 }

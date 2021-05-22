@@ -1,10 +1,18 @@
 package br.com.robertocarneiro.pautaapi.controllers;
 
+import br.com.robertocarneiro.pautaapi.dtos.AssociadoDTO;
+import br.com.robertocarneiro.pautaapi.dtos.PautaViewOpenVoteDTO;
+import br.com.robertocarneiro.pautaapi.dtos.PautaVisualizeDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.TelaFormularioDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.TelaSelecaoDTO;
 import br.com.robertocarneiro.pautaapi.services.PautaViewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("${controller.pauta-view.path}")
@@ -13,26 +21,24 @@ public class PautaViewController {
 
     private final PautaViewService pautaViewService;
 
-    @GetMapping("${controller.listar.path}")
-    public TelaSelecaoDTO viewList() {
-        return pautaViewService.viewList();
+    @PostMapping("${controller.listar.path}")
+    public TelaSelecaoDTO viewList(@RequestBody AssociadoDTO dto) {
+        return pautaViewService.viewList(dto.getAssociadoId());
     }
 
-    @GetMapping("${controller.visualizar.path}${controller.pauta.path}/{pautaId}")
-    public TelaFormularioDTO viewVisualize(
-            @PathVariable Long pautaId,
-            @RequestHeader(name = "Associado-Id", required = false) Long associadoId) {
-        return pautaViewService.viewVisualize(pautaId, associadoId);
+    @PostMapping("${controller.visualizar.path}")
+    public TelaFormularioDTO viewVisualize(@RequestBody @Valid PautaVisualizeDTO dto) {
+        return pautaViewService.viewVisualize(dto.getPautaId(), dto.getAssociadoId());
     }
 
-    @GetMapping("${controller.criar.path}")
-    public TelaFormularioDTO viewCreate() {
-        return pautaViewService.viewCreate();
+    @PostMapping("${controller.criar.path}")
+    public TelaFormularioDTO viewCreate(@RequestBody AssociadoDTO dto) {
+        return pautaViewService.viewCreate(dto.getAssociadoId());
     }
 
-    @GetMapping("${controller.abrir-votacao.path}${controller.pauta.path}/{pautaId}")
-    public TelaFormularioDTO viewOpenVote(@PathVariable Long pautaId) {
-        return pautaViewService.viewOpenVote(pautaId);
+    @PostMapping("${controller.abrir-votacao.path}")
+    public TelaFormularioDTO viewOpenVote(@RequestBody @Valid PautaViewOpenVoteDTO dto) {
+        return pautaViewService.viewOpenVote(dto.getPautaId(), dto.getAssociadoId());
     }
 
 }

@@ -42,9 +42,9 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public void save(VotoSaveDTO votoSaveDTO, Long pautaId, Long associadoId) {
-        Associado associado = associadoService.findById(associadoId);
-        Pauta pauta = pautaService.findById(pautaId);
+    public void save(VotoSaveDTO votoSaveDTO) {
+        Associado associado = associadoService.findById(votoSaveDTO.getAssociadoId());
+        Pauta pauta = pautaService.findById(votoSaveDTO.getPautaId());
         validateIfCanVote(associado, pauta);
 
         UserByCpfDTO userByCpf = userServiceClient.findUserByCpf(associado.getCpf());

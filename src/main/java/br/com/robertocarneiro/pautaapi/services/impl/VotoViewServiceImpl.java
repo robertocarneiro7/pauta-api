@@ -1,5 +1,6 @@
 package br.com.robertocarneiro.pautaapi.services.impl;
 
+import br.com.robertocarneiro.pautaapi.dtos.PautaVisualizeDTO;
 import br.com.robertocarneiro.pautaapi.dtos.VotoSaveDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.BotaoDTO;
 import br.com.robertocarneiro.pautaapi.dtos.view.CampoDTO;
@@ -17,12 +18,10 @@ import br.com.robertocarneiro.pautaapi.services.VotoViewService;
 import br.com.robertocarneiro.pautaapi.utils.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 @Service
@@ -44,12 +43,6 @@ public class VotoViewServiceImpl implements VotoViewService {
 
     @Value("${controller.pauta-view.path}")
     private String pautaViewPath;
-
-    @Value("${controller.pauta.path}")
-    private String pautaPath;
-
-    @Value("${header.associado-id.key}")
-    private String headerAssociadoIdKey;
 
     @Override
     public TelaFormularioDTO viewVote(Long pautaId, Long associadoId) {
@@ -81,16 +74,14 @@ public class VotoViewServiceImpl implements VotoViewService {
                 .botaoOk(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.save"))
-                        .url(serverUrl + votoPath + pautaPath + "/" + pautaId)
-                        .metodo(HttpMethod.POST)
-                        .body(VotoSaveDTO.builder().resposta("").build())
-                        .headers(Map.of(headerAssociadoIdKey, MessageUtil.get("header.associado-id.desc-value")))
+                        .url(serverUrl + votoPath)
+                        .body(VotoSaveDTO.builder().pautaId(pautaId).associadoId(associadoId).build())
                         .build())
                 .botaoCancelar(BotaoDTO
                         .builder()
                         .texto(MessageUtil.get("label.button.back"))
-                        .url(serverUrl + pautaViewPath + visualizarPath + pautaPath + "/" + pautaId)
-                        .metodo(HttpMethod.GET)
+                        .url(serverUrl + pautaViewPath + visualizarPath)
+                        .body(PautaVisualizeDTO.builder().pautaId(pautaId).associadoId(associadoId).build())
                         .build())
                 .build();
     }

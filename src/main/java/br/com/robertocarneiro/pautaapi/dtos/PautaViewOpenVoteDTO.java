@@ -3,7 +3,6 @@ package br.com.robertocarneiro.pautaapi.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -12,11 +11,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @JsonInclude
-public class PautaOpenVoteDTO {
+public class PautaViewOpenVoteDTO {
 
     @NotNull
     private Long pautaId;
-    @Min(value = 1)
-    private Long duracaoVotacao;
+    @NotNull
+    private Long associadoId;
 
 }

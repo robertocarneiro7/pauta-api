@@ -51,8 +51,8 @@ public class PautaServiceImpl implements PautaService {
     }
 
     @Override
-    public void openVote(Long id, PautaOpenVoteDTO pautaOpenVoteDTO) {
-        Pauta pauta = validateIfCanOpenVote(id);
+    public void openVote(PautaOpenVoteDTO pautaOpenVoteDTO) {
+        Pauta pauta = validateIfCanOpenVote(pautaOpenVoteDTO.getPautaId());
 
         Long votingDuration = ofNullable(pautaOpenVoteDTO.getDuracaoVotacao()).orElse(defaultVotingDuration);
         pauta.setDataAberturaVotacao(LocalDateTime.now());
