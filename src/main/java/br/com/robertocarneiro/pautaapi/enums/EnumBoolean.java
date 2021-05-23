@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public enum EnumBoolean {
 
     SIM("Sim"),
-    NAO("Não");
+    NAO("NÃ£o");
 
     private String descricao;
 

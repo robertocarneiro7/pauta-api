@@ -37,3 +37,6 @@ logs/
 
 ### H2-DB ###
 *.mv.db
+
+### Jmeter Generate Files ###
+**/src/main/resources/jmeter/*-Pauta-API.csv
