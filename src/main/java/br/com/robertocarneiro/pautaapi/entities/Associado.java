@@ -1,15 +1,13 @@
 package br.com.robertocarneiro.pautaapi.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,7 +18,7 @@ public class Associado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long associadoId;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String cpf;
     @CreationTimestamp
     private LocalDateTime dataCriacao;

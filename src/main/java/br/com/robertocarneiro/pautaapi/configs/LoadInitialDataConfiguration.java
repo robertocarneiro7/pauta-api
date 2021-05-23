@@ -5,8 +5,10 @@ import br.com.robertocarneiro.pautaapi.repositories.AssociadoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("!performance-test")
 public class LoadInitialDataConfiguration {
 
     @Bean
