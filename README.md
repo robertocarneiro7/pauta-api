@@ -49,18 +49,28 @@ As entidades criadas na aplicação, seguindo o formato "noJava => NO_BANCO":
     - Dependência utilizada na API para facilitar na conversão de Entidade para DTO e de DTO para Entidade
 11. **Springfox-Swagger**
     - Dependência utilizada na API para gerar a documentação(Swagger) da API
+12. **Git(Github)**
+    - Utilizado para gerenciar o versionamento do código
+13. **Maven**
+    - Utilizado para gerenciar as dependências e o plugin do JMeter
+14. **JMeter**
+    - Utilizado para executar o teste de performance da aplicação
 
 ## Dicas para rodar a aplicação
-
-Para utilizar a aplicação é necessário ter instalado na máquina o Java 11.
-
-Para simplificar o uso, recomendo a utilização do Intellij.
+1. É necessário ter instalado na máquina o Java 11.
+2. É necessário ter instalado na máquina o Maven.
+3. Para simplificar o uso, recomendo a utilização do Intellij.
 
 ## Observações Importantes
 1. Swagger está rodando no seguinte caminho:
-    - http://localhost:8080/swagger-ui/
-2. Os logs estão sendo gerados na pasta "logs", que está na raiz do projeto(Essa pasta está no .gitignore)
-3. A collection do postman, com os recursos da API, está no seguinte path:
-    - ***src/main/resources/postman/PautaAPI.postman_collection.json***
+    - ***http://localhost:8080/swagger-ui/***
+2. Os logs estão sendo gerados na pasta ***"logs"***, que está na raiz do projeto(Essa pasta está no .gitignore)
+3. A collection do postman, com os recursos da API, está no seguinte caminho:
+    - ***${project.basedir}/src/main/resources/postman/PautaAPI.postman_collection.json***
 4. Console do banco de dados está rodando no seguinte caminho:
-    - http://localhost:8080/h2-console
+    - ***http://localhost:8080/h2-console***
+5. O projeto e o resultado do JMeter, para execução dos testes de performance, estão na seguinte pasta:
+    - ***${project.basedir}/src/main/resources/jmeter/***
+6. Para cada execução dos testes de performance, é necessários seguir, na ordem, os seguintes passos
+    - Rexecutar a aplicação com a propriedade ***"spring.profiles.active"*** com valor igual a ***"performance-test"***
+    - Executar o comando maven ***"mvn verify"***

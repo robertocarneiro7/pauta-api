@@ -39,4 +39,4 @@ logs/
 *.mv.db
 
 ### Jmeter Generate Files ###
-**/src/main/resources/jmeter/*-Pauta-API.csv
+**/src/main/resources/jmeter/*-Pauta-API.csv*
