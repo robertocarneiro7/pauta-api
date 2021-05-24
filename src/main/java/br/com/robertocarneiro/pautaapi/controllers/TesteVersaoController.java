@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TesteVersaoController {
 
+    /**
+     * @deprecated Esse recurso de teste está depreceado, pois existe uma versão mais recente deste recurso
+     */
+    @Deprecated(since = "1")
     @Operation(summary = "Recurso Versão 0",
             description = "Recurso depreceado para testar o versionamento")
-    @Deprecated
     @GetMapping(value = "/v0${controller.teste-versao.path}")
     public String testVersionV0() {
         return "Recurso depreceado. Versão: v0";
