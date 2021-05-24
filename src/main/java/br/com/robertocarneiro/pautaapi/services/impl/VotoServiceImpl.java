@@ -7,6 +7,7 @@ import br.com.robertocarneiro.pautaapi.entities.Associado;
 import br.com.robertocarneiro.pautaapi.entities.Pauta;
 import br.com.robertocarneiro.pautaapi.entities.Voto;
 import br.com.robertocarneiro.pautaapi.enums.EnumBoolean;
+import br.com.robertocarneiro.pautaapi.enums.VoteSituationStatus;
 import br.com.robertocarneiro.pautaapi.exceptions.AlreadyVotedException;
 import br.com.robertocarneiro.pautaapi.exceptions.ExternalServiceDidNotAllowVoteException;
 import br.com.robertocarneiro.pautaapi.exceptions.VoteClosedException;
@@ -34,7 +35,8 @@ public class VotoServiceImpl implements VotoService {
     private final AssociadoService associadoService;
     private final UserServiceClient userServiceClient;
 
-    private static final String EMPATE = "EMPATE";
+    public static final String EMPATE = "EMPATE";
+    public static final String VOTACAO_AINDA_NAO_ABERTA = "VOTAÇÃO AINDA NÃO FOI ABERTA";
 
     @Override
     public Optional<Voto> findFirstByAssociadoAndPauta(Associado associado, Pauta pauta) {
@@ -48,7 +50,7 @@ public class VotoServiceImpl implements VotoService {
         validateIfCanVote(associado, pauta);
 
         UserByCpfDTO userByCpf = userServiceClient.findUserByCpf(associado.getCpf());
-        if (!userByCpf.getStatus().isEnable()) {
+        if (!VoteSituationStatus.ABLE_TO_VOTE.equals(userByCpf.getStatus())) {
             throw new ExternalServiceDidNotAllowVoteException(associado.getCpf());
         }
 
@@ -63,11 +65,15 @@ public class VotoServiceImpl implements VotoService {
 
     @Override
     public VotoCountDTO voteCount(Pauta pauta) {
+        LocalDateTime now = LocalDateTime.now();
         List<Voto> votosByPauta = repository.findAllByPauta(pauta);
         long countOptionYes = votosByPauta.stream().filter(v -> EnumBoolean.SIM.equals(v.getResposta())).count();
         long countOptionNo = votosByPauta.size() - countOptionYes;
         String mostVoted = EMPATE;
-        if (countOptionYes > countOptionNo) {
+        if (isNull(pauta.getDataAberturaVotacao()) || isNull(pauta.getDataEncerramentoVotacao())
+                || now.isBefore(pauta.getDataAberturaVotacao())) {
+            mostVoted = VOTACAO_AINDA_NAO_ABERTA;
+        } else if (countOptionYes > countOptionNo) {
             mostVoted = EnumBoolean.SIM.getDescricao();
         } else if (countOptionYes < countOptionNo) {
             mostVoted = EnumBoolean.NAO.getDescricao();
