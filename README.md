@@ -77,7 +77,7 @@ As entidades criadas na aplicação, seguindo o formato "noJava => NO_BANCO":
     - ***${project.basedir}/src/main/resources/jmeter/***
 6. Para cada execução dos testes de performance, é necessários seguir, na ordem, os seguintes passos:
     - Rexecutar a aplicação com a propriedade ***"spring.profiles.active"*** com valor igual a ***"performance-test"***
-    - Executar o comando maven ***"mvn verify"***
+    - Executar o comando maven ***"mvn verify -Pperformance-test"***
 
 ## Sobre os Testes de Performance
 Foi configurado para executar a seguinte quantidade de execuções:
