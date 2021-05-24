@@ -55,6 +55,10 @@ As entidades criadas na aplicação, seguindo o formato "noJava => NO_BANCO":
     - Utilizado para gerenciar as dependências e o plugin do JMeter
 14. **JMeter**
     - Utilizado para executar os testes de performance da aplicação
+15. **JUnit**
+    - Utilizado para desenvolver os testes unitários da aplicação
+16. **Mockito**
+    - Utilizado em conjunto com o JUnit, para controlar o comportamento dos métodos das classes instanciadas por ele(@Mock)
 
 ## Dicas para rodar a aplicação
 1. É necessário ter instalado na máquina o Java 11.
