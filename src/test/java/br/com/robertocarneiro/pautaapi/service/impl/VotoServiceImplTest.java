@@ -258,11 +258,11 @@ class VotoServiceImplTest {
         verify(userServiceClient, times(1)).findUserByCpf(eq(associado.getCpf()));
         verify(repository, times(1)).save(votoArgumentCaptor.capture());
 
-        Voto votoSaved = votoArgumentCaptor.getValue();
-        assertNotNull(votoSaved);
-        assertEquals(associado, votoSaved.getAssociado());
-        assertEquals(pauta, votoSaved.getPauta());
-        assertEquals(enumBoolean, votoSaved.getResposta());
+        Voto votoCaptured = votoArgumentCaptor.getValue();
+        assertNotNull(votoCaptured);
+        assertEquals(associado, votoCaptured.getAssociado());
+        assertEquals(pauta, votoCaptured.getPauta());
+        assertEquals(enumBoolean, votoCaptured.getResposta());
     }
 
     @ParameterizedTest
