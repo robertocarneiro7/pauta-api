@@ -54,7 +54,7 @@ As entidades criadas na aplicação, seguindo o formato "noJava => NO_BANCO":
 13. **Maven**
     - Utilizado para gerenciar as dependências e o plugin do JMeter
 14. **JMeter**
-    - Utilizado para executar o teste de performance da aplicação
+    - Utilizado para executar os testes de performance da aplicação
 
 ## Dicas para rodar a aplicação
 1. É necessário ter instalado na máquina o Java 11.
@@ -71,6 +71,21 @@ As entidades criadas na aplicação, seguindo o formato "noJava => NO_BANCO":
     - ***http://localhost:8080/h2-console***
 5. O projeto e o resultado do JMeter, para execução dos testes de performance, estão na seguinte pasta:
     - ***${project.basedir}/src/main/resources/jmeter/***
-6. Para cada execução dos testes de performance, é necessários seguir, na ordem, os seguintes passos
+6. Para cada execução dos testes de performance, é necessários seguir, na ordem, os seguintes passos:
     - Rexecutar a aplicação com a propriedade ***"spring.profiles.active"*** com valor igual a ***"performance-test"***
     - Executar o comando maven ***"mvn verify"***
+
+## Sobre os Testes de Performance
+Foi configurado para executar a seguinte quantidade de execuções:
+1. **1.000** criações de **Associados**
+2. **100** criações de **Pautas**
+3. **100** aberturas de votação(1 abertura para cada **Pauta** criada)
+4. **100.000** **Votos**(cada **Associado** vota 1 vez por **Pauta**)
+
+Ao executar os testes de performance por completo, foi notado um tempo muito elevado, quando existia a validação com o serviço externo, que valida se o CPF do Associado pode votar(**GET https://user-info.herokuapp.com/users/{cpf}**)
+
+Abaixo o tempo da execução dos testes de performance, para cada caso executado:
+1. Tempo total da execução sem validação externa no recurso de votar:
+    - 4 minutos e 20 segundos(Foram executados todos os 100.000 votos)
+2. Tempo que esperei na execução com validação externa no recurso de votar:
+    - 18 minutos e 20 segundos(Parei depois de serem executados pouco mais de 8.000 votos, restavam ainda 92.000 votos)
