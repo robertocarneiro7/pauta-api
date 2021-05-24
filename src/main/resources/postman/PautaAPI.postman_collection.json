@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"associadoId\": 1\r\n}",
+					"raw": "{\r\n    \"associadoId\": 1,\r\n    \"pagina\": 0,\r\n    \"tamanho\": 10\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -80,7 +80,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nome\": \"Pauta 5\",\r\n    \"descricao\": \"Descrição Pauta 5\"\r\n}",
+					"raw": "{\r\n    \"nome\": \"Pauta 6\",\r\n    \"descricao\": \"Descrição Pauta 6\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,7 +98,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 1\r\n}",
+					"raw": "{\r\n    \"pautaId\": 6,\r\n    \"associadoId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,7 +116,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 1\r\n}",
+					"raw": "{\r\n    \"pautaId\": 6,\r\n    \"associadoId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -134,7 +134,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"duracaoVotacao\": 10000000\r\n}",
+					"raw": "{\r\n    \"pautaId\": 6,\r\n    \"duracaoVotacao\": 10000000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -152,7 +152,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 1\r\n}",
+					"raw": "{\r\n    \"pautaId\": 6,\r\n    \"associadoId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -170,7 +170,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"resposta\": \"Sim\",\r\n    \"pautaId\": 1,\r\n    \"associadoId\": 2\r\n}",
+					"raw": "{\r\n    \"resposta\": \"Não\",\r\n    \"pautaId\": 6,\r\n    \"associadoId\": 3\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
